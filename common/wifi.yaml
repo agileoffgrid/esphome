@@ -1,0 +1,6 @@
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  fast_connect: true
+  reboot_timeout: 300s
+  domain: !secret wifi_domain

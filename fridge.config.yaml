@@ -1,0 +1,5 @@
+substitutions:
+  device_name: fridge
+  friendly_name: Fridge
+
+<<: !include devices/sonoff-powr2.yaml

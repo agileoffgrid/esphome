@@ -1,0 +1,23 @@
+substitutions:
+  device_name: bedroom
+  friendly_name: Bedroom
+
+<<: !include devices/sonoff-sv-light.yaml
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO5
+      mode: INPUT_PULLUP
+      inverted: true
+    id: button
+    internal: true
+    on_click:
+      then:
+        - light.toggle: ${device_name}
+    on_double_click:
+      then:
+        - homeassistant.service:
+            service: light.toggle
+            data:
+              entity_id: light.office

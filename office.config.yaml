@@ -1,0 +1,17 @@
+substitutions:
+  device_name: office
+  friendly_name: Office
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO5
+      mode: INPUT_PULLUP
+      inverted: true
+    id: button
+    internal: true
+    on_press:
+      then:
+        - light.toggle: ${device_name}
+        
+<<: !include devices/sonoff-sv-light.yaml

@@ -1,0 +1,53 @@
+substitutions:
+  device_name: main_panel
+  friendly_name: Main Panel
+
+<<: !include devices/sonoff-4ch-pro.yaml
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: true
+    id: button_1
+    internal: true
+    on_press:
+      then:
+        - light.toggle: main
+  - platform: gpio
+    pin:
+      number: GPIO9
+      mode: INPUT_PULLUP
+      inverted: true
+    id: button_2
+    internal: true
+    on_press:
+      then:
+        - light.toggle: awning
+  - platform: gpio
+    pin:
+      number: GPIO10
+      mode: INPUT_PULLUP
+      inverted: true
+    id: button_3
+    internal: true
+    on_press:
+      then:
+        - switch.toggle: electric_water_heater
+
+light:
+  - platform: binary
+    name: Main Lights
+    output: relay_1
+    id: main
+  - platform: binary
+    name: Awning Lights
+    output: relay_2
+    id: awning
+
+switch:
+  - platform: gpio
+    pin: GPIO4
+    name: Electric Water Heater
+    id: electric_water_heater

@@ -1,0 +1,73 @@
+packages:
+  wifi: !include ../common/wifi.yaml
+  device_base: !include ../common/base.yaml
+
+esphome:
+  platform: ESP8266
+  board: esp01_1m
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Button"
+    id: "${device_name}_button"
+    on_press:
+      - switch.toggle: "${device_name}"
+  - platform: status
+    name: "Status"
+    id: "${device_name}_status"
+
+logger:
+  baud_rate: 0
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+sensor:
+  - platform: cse7766
+    update_interval: 5s
+    current:
+      name: "Current"
+      id: "${device_name}_current"
+    voltage:
+      name: "Voltage"
+      id: "${device_name}_voltage"
+    power:
+      name: "Power"
+      id: "${device_name}_power"
+      on_value:
+        then:
+          - sensor.template.publish:
+              id: "${device_name}_apparent_power"
+              state: !lambda 'return id(${device_name}_voltage).state * id(${device_name}_current).state;'
+          - sensor.template.publish:
+              id: "${device_name}_power_factor"
+              state: !lambda 'return id(${device_name}_power).state / (id(${device_name}_voltage).state * id(${device_name}_current).state);'
+  - platform: template
+    name: "Apparent Power"
+    id: "${device_name}_apparent_power"
+    unit_of_measurement: W
+  - platform: template
+    name: "Power Factor"
+    id: "${device_name}_power_factor"
+  - platform: total_daily_energy
+    name: "Total Daily Energy"
+    power_id: "${device_name}_power"
+    id: "${device_name}_total_daily_energy"
+
+switch:
+  - platform: gpio
+    name: ${friendly_name}
+    pin: GPIO12
+    id: ${device_name}
+
+status_led:
+  pin: GPIO13
+
+time:
+  - platform: sntp
+    id: current_time

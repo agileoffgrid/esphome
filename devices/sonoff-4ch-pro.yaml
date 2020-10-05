@@ -1,0 +1,22 @@
+packages:
+  wifi: !include common/wifi.yaml
+  device_base: !include common/base.yaml
+
+esphome:
+  platform: ESP8266
+  board: esp01_1m
+
+output:
+  - platform: gpio
+    pin: GPIO12
+    id: relay_1
+  - platform: gpio
+    pin: GPIO5
+    id: relay_2
+  - platform: gpio
+    pin: GPIO15
+    id: relay_4
+
+binary_sensor:
+  - platform: status
+    name: "${friendly_name} Status"
