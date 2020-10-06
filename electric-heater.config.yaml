@@ -1,5 +1,6 @@
 substitutions:
-  device_name: electric_heater
+  hostname: electric-heater
   friendly_name: Electric Heater
 
-<<: !include devices/sonoff-s31.yaml
+packages:
+  device_base: !include devices/sonoff-s31.yaml

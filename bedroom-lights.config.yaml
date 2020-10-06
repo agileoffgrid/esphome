@@ -1,8 +1,10 @@
 substitutions:
-  device_name: bedroom
-  friendly_name: Bedroom
+  hostname: bedroom-lights
+  friendly_name: Bedroom Lights
+  light_name: Bedroom
 
-<<: !include devices/sonoff-sv-light.yaml
+packages:
+  device_base: !include devices/sonoff-sv-light.yaml
 
 binary_sensor:
   - platform: gpio
@@ -14,7 +16,7 @@ binary_sensor:
     internal: true
     on_click:
       then:
-        - light.toggle: ${device_name}
+        - light.toggle: device_light
     on_double_click:
       then:
         - homeassistant.service:

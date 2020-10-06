@@ -1,6 +1,10 @@
 substitutions:
-  device_name: bathroom
-  friendly_name: Bathroom
+  hostname: bathroom-lights
+  friendly_name: Bathroom Lights
+  light_name: Bathroom
+
+packages:
+  device_base: !include devices/sonoff-sv-light.yaml
 
 binary_sensor:
   - platform: gpio
@@ -12,6 +16,4 @@ binary_sensor:
     internal: true
     on_press:
       then:
-        - light.toggle: ${device_name}
-
-<<: !include devices/sonoff-sv-light.yaml
+        - light.toggle: device_light

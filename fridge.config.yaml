@@ -1,5 +1,6 @@
 substitutions:
-  device_name: fridge
+  hostname: fridge
   friendly_name: Fridge
 
-<<: !include devices/sonoff-powr2.yaml
+packages:
+  device_base: !include devices/sonoff-powr2.yaml

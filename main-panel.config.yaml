@@ -1,8 +1,9 @@
 substitutions:
-  device_name: main_panel
+  hostname: main-panel
   friendly_name: Main Panel
 
-<<: !include devices/sonoff-4ch-pro.yaml
+packages:
+  device_base: !include devices/sonoff-4ch-pro.yaml
 
 binary_sensor:
   - platform: gpio
@@ -38,11 +39,12 @@ binary_sensor:
 
 light:
   - platform: binary
-    name: Main Lights
+    name: Main
     output: relay_1
     id: main
+    
   - platform: binary
-    name: Awning Lights
+    name: Awning
     output: relay_2
     id: awning
 

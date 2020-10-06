@@ -1,14 +1,10 @@
+substitutions:
+  node_platform: ESP8266
+  node_board: esp01_1m
+
 packages:
-  wifi: !include ../common/wifi.yaml
   device_base: !include ../common/base.yaml
-
-esphome:
-  platform: ESP8266
-  board: esp01_1m
-
-binary_sensor:
-  - platform: status
-    name: "${friendly_name} Lights Status"
+  basic_sensors: !include ../common/basic_sensors.yaml
 
 output:
   - platform: gpio
@@ -17,6 +13,6 @@ output:
 
 light:
   - platform: binary
-    name: "${friendly_name}"
+    name: ${light_name}
     output: relay
-    id: ${device_name}
+    id: device_light
