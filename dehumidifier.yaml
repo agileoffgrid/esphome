@@ -1,0 +1,6 @@
+substitutions:
+  hostname: dehumidifier
+  friendly_name: Dehumidifier
+
+packages:
+  device_base: !include devices/sonoff-s31.yaml
