@@ -26,30 +26,93 @@ binary_sensor:
     on_press:
       then:
         - light.toggle: awning
+
   - platform: gpio
     pin:
       number: GPIO10
       mode: INPUT_PULLUP
       inverted: true
-    id: button_3
+    name: Electric Water Heater Button
     internal: true
+    id: button_3
     on_press:
-      then:
-        - switch.toggle: electric_water_heater
+      - switch.turn_on: can_turn_on_3
+      - switch.toggle: desired_state_3
+
+  - platform: gpio
+    pin: GPIO4
+    name: Electric Water Heater Is On
 
 light:
   - platform: binary
     name: Main
     output: relay_1
     id: main
-    
+
   - platform: binary
     name: Awning
     output: relay_2
     id: awning
 
+esphome:
+  on_boot:
+    then:
+      - if:
+          condition:
+            and:
+              - switch.is_on: can_turn_on_3
+              - switch.is_on: desired_state_3
+          then:
+            - output.turn_on: relay_3
+          else:
+            - output.turn_off: relay_3
+
 switch:
-  - platform: gpio
-    pin: GPIO4
+  - platform: template
+    name: Electric Water Heater Can Turn On
+    id: can_turn_on_3
+    restore_state: true
+    optimistic: true
+    turn_on_action:
+      - if:
+          condition:
+            switch.is_on: desired_state_3
+          then:
+            - output.turn_on: relay_3
+          else:
+            - output.turn_off: relay_3
+    turn_off_action:
+      - output.turn_off: relay_3
+
+  - platform: template
     name: Electric Water Heater
-    id: electric_water_heater
+    id: desired_state_3
+    restore_state: true
+    optimistic: true
+    turn_on_action:
+      - if:
+          condition:
+            switch.is_on: can_turn_on_3
+          then:
+            - output.turn_on: relay_3
+          else:
+            - output.turn_off: relay_3
+    turn_off_action:
+      - output.turn_off: relay_3
+
+text_sensor:
+  - platform: template
+    name: Electric Water Heater Operating Status
+    id: operating_status_3
+    lambda: |-
+      if (id(can_turn_on_3).state && id(desired_state_3).state) {
+        return {"Active"};
+      } else if (id(can_turn_on_3).state && !id(desired_state_3).state) {
+        return {"Idle"};
+      } else if (!id(can_turn_on_3).state && id(desired_state_3).state) {
+        return {"Paused"};
+      } else {
+        return {"Off"};
+      }
+    update_interval: 1s
+    
