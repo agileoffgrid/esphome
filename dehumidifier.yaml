@@ -4,3 +4,4 @@ substitutions:
 
 packages:
   device_base: !include devices/sonoff-s31.yaml
+  switch: !include devices/sonoff-s31/simple_switch.yaml

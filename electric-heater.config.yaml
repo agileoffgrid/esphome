@@ -4,3 +4,19 @@ substitutions:
 
 packages:
   device_base: !include devices/sonoff-s31.yaml
+  switch: !include devices/sonoff-s31/conditional_switch.yaml
+
+text_sensor:
+  - platform: template
+    name: ${friendly_name} Mode
+    lambda: |-
+      if (id(power).state < 2) {
+        return {"Off"};
+      } else if (id(power).state < 100) {
+        return {"Fan"};
+      } else if (id(power).state < 1000) {
+        return {"Low"};
+      } else {
+        return {"High"};
+      }
+    update_interval: 1s

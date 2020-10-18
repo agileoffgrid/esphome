@@ -1,0 +1,17 @@
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: true
+    name: ${friendly_name} Button
+    internal: true
+    id: button
+    on_press:
+      - switch.toggle: device_switch
+
+switch:
+  - platform: gpio
+    name: ${friendly_name}
+    pin: GPIO12
+    id: device_switch

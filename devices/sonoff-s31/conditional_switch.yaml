@@ -1,0 +1,83 @@
+esphome:
+  on_boot:
+    then:
+      - if:
+          condition:
+            and:
+              - switch.is_on: can_turn_on
+              - switch.is_on: desired_state
+          then:
+            - output.turn_on: relay
+          else:
+            - output.turn_off: relay
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: true
+    name: ${friendly_name} Button
+    internal: true
+    id: button
+    on_press:
+      - switch.turn_on: can_turn_on
+      - switch.toggle: desired_state
+
+  - platform: gpio
+    pin: GPIO12
+    name: ${friendly_name} Is On
+
+switch:
+  - platform: template
+    name: ${friendly_name} Can Turn On
+    id: can_turn_on
+    restore_state: true
+    optimistic: true
+    turn_on_action:
+      - if:
+          condition:
+            switch.is_on: desired_state
+          then:
+            - output.turn_on: relay
+          else:
+            - output.turn_off: relay
+    turn_off_action:
+      - output.turn_off: relay
+
+  - platform: template
+    name: ${friendly_name}
+    id: desired_state
+    restore_state: true
+    optimistic: true
+    turn_on_action:
+      - if:
+          condition:
+            switch.is_on: can_turn_on
+          then:
+            - output.turn_on: relay
+          else:
+            - output.turn_off: relay
+    turn_off_action:
+      - output.turn_off: relay
+
+output:
+  - platform: gpio
+    pin: GPIO12
+    id: relay
+
+text_sensor:
+  - platform: template
+    name: ${friendly_name} Operating Status
+    id: operating_status
+    lambda: |-
+      if (id(can_turn_on).state && id(desired_state).state) {
+        return {"Active"};
+      } else if (id(can_turn_on).state && !id(desired_state).state) {
+        return {"Idle"};
+      } else if (!id(can_turn_on).state && id(desired_state).state) {
+        return {"Paused"};
+      } else {
+        return {"Off"};
+      }
+    update_interval: 1s

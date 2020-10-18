@@ -6,17 +6,6 @@ packages:
   device_base: !include ../common/base.yaml
   basic_sensors: !include ../common/basic_sensors.yaml
 
-binary_sensor:
-  - platform: gpio
-    pin:
-      number: GPIO0
-      mode: INPUT_PULLUP
-      inverted: true
-    name: ${friendly_name} Button
-    id: button
-    on_press:
-      - switch.toggle: device_switch
-
 logger:
   baud_rate: 0
 
@@ -38,12 +27,6 @@ sensor:
     power:
       name: ${friendly_name} Power
       id: power
-
-switch:
-  - platform: gpio
-    name: ${friendly_name}
-    pin: GPIO12
-    id: device_switch
 
 status_led:
   pin: GPIO13
