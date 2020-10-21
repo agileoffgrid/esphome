@@ -1,0 +1,42 @@
+substitutions:
+  hostname: appmonitor01
+  friendly_name: App Monitor 1
+  node_platform: esp8266
+  node_board: nodemcu
+
+packages:
+  device_base: !include common/base.yaml
+  basic_sensors: !include common/basic_sensors.yaml
+
+dallas:
+  - pin: D2
+    update_interval: 10s
+
+sensor:
+  - platform: dallas
+    address: 0x6E8118514901FF28
+    name: "Fridge Coil Temperature" # sensor #1
+    filters:
+      - lambda: return x * (9.0/5.0) + 32.0;
+    unit_of_measurement: "°F"
+
+  - platform: dallas
+    address: 0xEF81185138F1FF28
+    name: "Hot Water Tank Top Temperature" # sensor #2
+    filters:
+      - lambda: return x * (9.0/5.0) + 32.0;
+    unit_of_measurement: "°F"
+
+  - platform: dallas
+    address: 0x94811851AB5DFF28
+    name: "Hot Water Tank Bottom Temperature" # sensor #3
+    filters:
+      - lambda: return x * (9.0/5.0) + 32.0;
+    unit_of_measurement: "°F"
+
+  - platform: dallas
+    address: 0x03811851331FFF28
+    name: "Water Pump Temperature" # sensor #4
+    filters:
+      - lambda: return x * (9.0/5.0) + 32.0;
+    unit_of_measurement: "°F"
