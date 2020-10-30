@@ -1,6 +1,6 @@
 # ESPHome
 
-This is the real ESPHome device configuration I run in our home.
+This is the real ESPHome device configuration I run in our home. You can see more about our setup at: https://www.adventurousway.com/category/smart-rv
 
 ## Things & Devices
 
