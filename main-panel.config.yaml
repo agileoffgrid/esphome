@@ -16,6 +16,7 @@ binary_sensor:
     on_press:
       then:
         - light.toggle: main
+
   - platform: gpio
     pin:
       number: GPIO9
@@ -42,6 +43,17 @@ binary_sensor:
   - platform: gpio
     pin: GPIO4
     name: Electric Water Heater Is On
+
+  - platform: gpio
+    pin:
+      number: GPIO14
+      mode: INPUT_PULLUP
+      inverted: true
+    id: button_4
+    internal: true
+    on_press:
+      then:
+        - switch.toggle: gas_water_heater
 
 light:
   - platform: binary
@@ -100,6 +112,11 @@ switch:
     turn_off_action:
       - output.turn_off: relay_3
 
+  - platform: gpio
+    name: Gas Water Heater
+    pin: GPIO15
+    id: gas_water_heater
+
 text_sensor:
   - platform: template
     name: Electric Water Heater Operating Status
@@ -115,4 +132,3 @@ text_sensor:
         return {"Off"};
       }
     update_interval: 1s
-    
