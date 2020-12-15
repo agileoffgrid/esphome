@@ -20,5 +20,5 @@ wifi:
   reboot_timeout: 300s
   domain: !secret WIFI_DOMAIN
   ap:
-    ssid: ${friendly_name} !secret Hotspot
+    ssid: ${friendly_name} Hotspot
     password: !secret WIFI_PASSWORD
