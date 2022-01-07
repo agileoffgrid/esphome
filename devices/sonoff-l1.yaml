@@ -1,0 +1,56 @@
+substitutions:
+  node_platform: ESP8266
+  node_board: esp8285
+
+packages:
+  device_base: !include ../common/base.yaml
+  basic_sensors: !include ../common/basic_sensors.yaml
+
+esphome:
+  includes:
+    - custom_components/sonoff_l1.h
+
+light:
+  - platform: custom
+    lambda: |-
+      auto light_out = new SonoffL1();
+      App.register_component(light_out);
+      return {light_out};
+    lights:
+      - name: ${light_name}
+        effects:
+          - lambda:
+              name: Colorful Gradient (Smooth)
+              lambda: |-
+                auto light_out = new SonoffL1();
+                light_out->setModeGradient();
+          - lambda:
+              name: Colorful Breath (Fade)
+              lambda: |-
+                auto light_out = new SonoffL1();
+                light_out->setModeBreath();
+          - lambda:
+              name: RGB Gradient
+              lambda: |-
+                auto light_out = new SonoffL1();
+                light_out->setModeRGBGradient();
+          - lambda:
+              name: RGB Pulse (Strobe)
+              lambda: |-
+                auto light_out = new SonoffL1();
+                light_out->setModeRGBPulse();
+          - lambda:
+              name: RGB Breath
+              lambda: |-
+                auto light_out = new SonoffL1();
+                light_out->setModeRGBBreath();
+          - lambda:
+              name: RGB Strobe (Flash)
+              lambda: |-
+                auto light_out = new SonoffL1();
+                light_out->setModeRGBStrobe();
+          - lambda:
+              name: Sound Reactive
+              lambda: |-
+                auto light_out = new SonoffL1();
+                light_out->setModeSync();

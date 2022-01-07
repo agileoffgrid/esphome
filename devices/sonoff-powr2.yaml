@@ -51,10 +51,12 @@ sensor:
     name: ${friendly_name} Apparent Power
     id: apparent_power
     unit_of_measurement: W
+    state_class: measurement
 
   - platform: template
     name: ${friendly_name} Power Factor
     id: power_factor
+    state_class: measurement
 
   - platform: total_daily_energy
     name: ${friendly_name} Total Daily Energy

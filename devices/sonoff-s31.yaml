@@ -15,18 +15,30 @@ uart:
 
 sensor:
   - platform: cse7766
-    update_interval: 1s
+    update_interval: 5s
     current:
       name: ${friendly_name} Current
       id: current
+      state_class: measurement
 
     voltage:
       name: ${friendly_name} Voltage
       id: voltage
+      state_class: measurement
 
     power:
       name: ${friendly_name} Power
       id: power
+      state_class: measurement
+
+  - platform: total_daily_energy
+    name: ${friendly_name} Total Daily Energy
+    power_id: power
+    id: device_total_daily_energy
 
 status_led:
   pin: GPIO13
+
+time:
+  - platform: sntp
+    id: current_time

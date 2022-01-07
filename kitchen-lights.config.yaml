@@ -1,0 +1,7 @@
+substitutions:
+  hostname: kitchen-lights
+  friendly_name: Kitchen Lights
+  light_name: Kitchen
+
+packages:
+  device_base: !include devices/sonoff-l1.yaml
