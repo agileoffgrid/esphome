@@ -28,10 +28,7 @@ class SonoffL1 : public Component, public LightOutput {
   LightTraits get_traits() override {
     // return the traits this light supports
     auto traits = LightTraits();
-    traits.set_supports_brightness(true);
-    traits.set_supports_rgb(true);
-    traits.set_supports_rgb_white_value(false);
-    traits.set_supports_color_temperature(false);
+    traits.set_supported_color_modes({ColorMode::RGB, ColorMode::BRIGHTNESS});
     return traits;
   }
 
